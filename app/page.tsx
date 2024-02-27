@@ -27,32 +27,47 @@ export default function Home() {
     textareaRef.current!.style.height = `${textareaRef.current!.scrollHeight}px`
   }
 
-  async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
-    setError('')
-    setIsTyping(true)
+  async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
+    try {
+      setText("");
+      setError('');
+      setIsTyping(true);
+      console.log(messages);
+      setMessages(prevMessages => [...prevMessages, { role: 'user', content: text }]);
 
-    const response = await fetch('/api/openai', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        messages: [...messages, { role: 'user', content: text }],
-      }),
-    })
-    const data = await response.json()
+      const response = await fetch('/api/openai', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messages: [...messages, { role: 'user', content: text }],
+        }),
+      });
 
-    if (response.ok) {
-      setMessages([
-        ...messages,
-        { role: 'user', content: text },
+      if (!response.ok) {
+        throw new Error('Network response was not ok.');
+      }
+
+      const data = await response.json();
+      console.log(messages);
+      setMessages(prevMessages => [
+        ...prevMessages,
         { role: 'assistant', content: data.message.content },
-      ])
-      setText('')
-    } else {
-      setError(data.error)
+      ]);
+      setText('');
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setIsTyping(false);
     }
-    setIsTyping(false)
+  }
+
+
+  const handleKeyDown = (e: any) => {
+    if (e.key === "Enter") {
+      handleSubmit(e)
+    }
   }
 
   return (
@@ -85,6 +100,7 @@ export default function Home() {
           <button
             onClick={handleClear}
             className="rounded bg-gray-600 px-3 py-1 text-white hover:bg-gray-500"
+            disabled={isTyping}
           >
             Clear
           </button>
@@ -94,9 +110,12 @@ export default function Home() {
             value={text}
             onChange={handleChange}
             className="w-full resize-none overflow-hidden rounded px-2 py-1 text-gray-900 focus:outline-0"
+            onKeyDown={handleKeyDown}
+            disabled={isTyping}
           />
           <button
             onClick={handleSubmit}
+            disabled={isTyping}
             className="rounded bg-blue-600 px-3 py-1 text-white hover:bg-blue-500"
           >
             Send
