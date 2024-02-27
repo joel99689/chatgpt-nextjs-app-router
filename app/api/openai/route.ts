@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
       {
         role: 'system',
         content:
-          'You are a helpful assistant who speaks Japanese Kansai dialect.',
+          'You are a helpful assistant named Mployer chatbot.',
       },
       ...messages,
     ],
