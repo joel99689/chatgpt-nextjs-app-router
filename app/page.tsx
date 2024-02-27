@@ -57,12 +57,11 @@ export default function Home() {
 
   return (
     <main className="relative mx-auto max-w-3xl px-4">
-      <h1 className="my-8 text-center text-4xl">ChatGPT Next.js App Router</h1>
+      <h1 className="my-8 text-center text-4xl">Mployer chatbot</h1>
       <div
         style={{
-          marginBottom: `${
-            textareaRef.current ? textareaRef.current.scrollHeight + 100 : 0
-          }px`,
+          marginBottom: `${textareaRef.current ? textareaRef.current.scrollHeight + 100 : 0
+            }px`,
         }}
       >
         {messages.length > 0 && (

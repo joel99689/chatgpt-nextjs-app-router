@@ -4,8 +4,8 @@ import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'ChatGPT Next.js App Router',
-  description: 'Simple chat app with OpenAI API and Next.js App Router',
+  title: 'Mployer chatbot',
+  description: 'Simple chat app with OpenAI API using Mployer business data',
 }
 
 export default function RootLayout({
