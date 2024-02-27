@@ -76,7 +76,7 @@ export default function Home() {
             ))}
           </div>
         )}
-        {isTyping && <div className="mt-1">typing...</div>}
+        {isTyping && <div className="mt-1">...</div>}
         {error && <div className="mt-1 text-red-500">{error}</div>}
       </div>
 
